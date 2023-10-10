@@ -39,3 +39,31 @@ I znajdował się tam ciekawy ładunek, który postanowiłem wstrzyknąć. Tylko
 Musimy pamiętać aby podmienić ścieżkę oraz komentarz. Udało mi się wstrzyknąć polecenie whoami, wiem, że polecenia wykonuje użytkownik www-data.
 Następnie spróbujemy wstrzyknąć reverse-shell aby otrzymać powłokę, pierwszym krokiem będzie włączenie netcat aby nasłuchiwał na wybranym porcie.
 ``` nc -lvnp 9001```
+Za pomocą tego przechwyconego rządania uda nam się uzyskać reverse-shell'a
+
+![obraz](https://github.com/Anogota/Validation/assets/143951834/c37fba7b-8b59-43d1-83cd-2654c0c590c7)
+
+Jak już uzyskałem powłokę, wpisałem ls aby wyświetlić wszystkie pliki.
+```
+www-data@validation:/var/www/html$ ls
+ls
+account.php
+config.php
+css
+index.php
+js
+```
+Ukazał mi się ciekawy plik config.php. Więc sprawdziłem co się w nim znajduje i ku mojemy zaskoczeniu.
+```
+<?php
+  $servername = "127.0.0.1";
+  $username = "uhc";
+  $password = "uhc-9qual-global-pw";
+  $dbname = "registration";
+
+  $conn = new mysqli($servername, $username, $password, $dbname);
+?>
+```
+Znajdowało się tam hasło, pierwszym krokiem jaki zrobiłem było to su uhc i hasło, niestety nie zadziało. Następnie su root i hasło i boom, mam root'a strasznie proste :D
+
+![obraz](https://github.com/Anogota/Validation/assets/143951834/5ad8bd2a-7aab-41d7-a2e4-98b683b7530e)
